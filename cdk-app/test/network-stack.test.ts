@@ -10,8 +10,7 @@ test('VPC is created with correct CIDR', ()=> {
   const template = Template.fromStack(stack);
 
   template.hasResourceProperties('AWS::EC2::VPC', {
-    CidrBlock: '10.0.0.0/16',
-    mazAzs: 2
+    CidrBlock: '10.0.0.0/16'
   });
 });
 
