@@ -37,7 +37,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: af-south-1
       
+      - name: CDK Bootstrap
+        run: npx cdk bootstrap
+        working-directory: cdk-app/
+        
       - name: CDK Deploy
         run: npx cdk deploy --require-approval never
+        working-directory: cdk-app/
+
+      - name: CDK Destroy
+        run: npx cdk destroy
         working-directory: cdk-app/
 
