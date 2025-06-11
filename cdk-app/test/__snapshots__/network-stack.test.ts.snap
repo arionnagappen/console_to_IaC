@@ -1,0 +1,345 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VPC stack matches snapshot 1`] = `
+{
+  "Outputs": {
+    "VpcId": {
+      "Description": "VPC ID",
+      "Value": {
+        "Ref": "MyVpcMyVPC28A4F3FB",
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "MyVpcMyVPC28A4F3FB": {
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "MyVpcMyVPCIGW6C595E3B": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "MyVpcMyVPCVPCGW75395802": {
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "MyVpcMyVPCIGW6C595E3B",
+        },
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+    "MyVpcMyVPCapplicationsubnetSubnet1DefaultRoute44E03D22": {
+      "DependsOn": [
+        "MyVpcMyVPCVPCGW75395802",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "MyVpcMyVPCIGW6C595E3B",
+        },
+        "RouteTableId": {
+          "Ref": "MyVpcMyVPCapplicationsubnetSubnet1RouteTable23F4EBCD",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "MyVpcMyVPCapplicationsubnetSubnet1RouteTable23F4EBCD": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC/application-subnetSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "MyVpcMyVPCapplicationsubnetSubnet1RouteTableAssociationC4106D18": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "MyVpcMyVPCapplicationsubnetSubnet1RouteTable23F4EBCD",
+        },
+        "SubnetId": {
+          "Ref": "MyVpcMyVPCapplicationsubnetSubnet1Subnet54B065C1",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "MyVpcMyVPCapplicationsubnetSubnet1Subnet54B065C1": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.0.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "application-subnet",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC/application-subnetSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "MyVpcMyVPCapplicationsubnetSubnet2DefaultRoute76B5A664": {
+      "DependsOn": [
+        "MyVpcMyVPCVPCGW75395802",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "MyVpcMyVPCIGW6C595E3B",
+        },
+        "RouteTableId": {
+          "Ref": "MyVpcMyVPCapplicationsubnetSubnet2RouteTableF09E6FE4",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "MyVpcMyVPCapplicationsubnetSubnet2RouteTableAssociation567406DD": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "MyVpcMyVPCapplicationsubnetSubnet2RouteTableF09E6FE4",
+        },
+        "SubnetId": {
+          "Ref": "MyVpcMyVPCapplicationsubnetSubnet2Subnet1F6D9A0F",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "MyVpcMyVPCapplicationsubnetSubnet2RouteTableF09E6FE4": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC/application-subnetSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "MyVpcMyVPCapplicationsubnetSubnet2Subnet1F6D9A0F": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.1.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "application-subnet",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC/application-subnetSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "MyVpcMyVPCdatabasesubnetSubnet1RouteTable2EC17299": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC/database-subnetSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "MyVpcMyVPCdatabasesubnetSubnet1RouteTableAssociation0798F2A0": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "MyVpcMyVPCdatabasesubnetSubnet1RouteTable2EC17299",
+        },
+        "SubnetId": {
+          "Ref": "MyVpcMyVPCdatabasesubnetSubnet1SubnetCB0EE6CF",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "MyVpcMyVPCdatabasesubnetSubnet1SubnetCB0EE6CF": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.2.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "database-subnet",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC/database-subnetSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "MyVpcMyVPCdatabasesubnetSubnet2RouteTableAssociationF2AF5313": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "MyVpcMyVPCdatabasesubnetSubnet2RouteTableD7FDD806",
+        },
+        "SubnetId": {
+          "Ref": "MyVpcMyVPCdatabasesubnetSubnet2Subnet6FC8DD14",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "MyVpcMyVPCdatabasesubnetSubnet2RouteTableD7FDD806": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC/database-subnetSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "MyVpcMyVPCdatabasesubnetSubnet2Subnet6FC8DD14": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.3.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "database-subnet",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestStack/MyVpc/MyVPC/database-subnetSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "MyVpcMyVPC28A4F3FB",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
