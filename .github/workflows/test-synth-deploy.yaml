@@ -18,34 +18,41 @@ jobs:
         with:
           node-version: 18
 
+      # Install Dependencies
       - name: Install dependencies
         run: npm install
         working-directory: cdk-app/
 
+      # Run Unit Tests
       - name: Run unit tests
         run: npm test
         working-directory: cdk-app/
 
+      # Synthesize CDK App
       - name: Synthesize CDK
         run: npx cdk synth
         working-directory: cdk-app/
 
+      # Admin Access with Key-Pairs
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: af-south-1
-      
+
+      # CDK Bootstrap
       - name: CDK Bootstrap
         run: npx cdk bootstrap
         working-directory: cdk-app/
         
+      # Deploy CDK App
       - name: CDK Deploy
         run: npx cdk deploy --require-approval never
         working-directory: cdk-app/
 
+      # Destroy CDK App
       - name: CDK Destroy
-        run: npx cdk destroy
+        run: npx cdk destroy -y
         working-directory: cdk-app/
 
