@@ -3,6 +3,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 export interface MyVpcProps {
   cidr: string;
+  cidrMask: number;
   maxAzs?: number;
 }
 
@@ -21,14 +22,13 @@ export class MyVPC extends Construct {
         {
           name: 'application-subnet',
           subnetType: ec2.SubnetType.PUBLIC,
-          cidrMask: 24,
-          mapPublicIpOnLaunch: true
+          cidrMask: props.cidrMask ?? 24,
         },
 
         {
           name: 'database-subnet',
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
-          cidrMask: 24
+          cidrMask: props.cidrMask ?? 24
         }
       ]
     })

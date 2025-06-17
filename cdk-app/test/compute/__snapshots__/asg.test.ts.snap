@@ -1,0 +1,220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ASG Snapshot Test 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "TestASGAppServerASGE3140A3D": {
+      "Properties": {
+        "DesiredCapacity": "2",
+        "LaunchTemplate": {
+          "LaunchTemplateId": {
+            "Ref": "TestLaunchTemplateAppLaunchTemplate816C81D4",
+          },
+          "Version": {
+            "Fn::GetAtt": [
+              "TestLaunchTemplateAppLaunchTemplate816C81D4",
+              "LatestVersionNumber",
+            ],
+          },
+        },
+        "MaxSize": "3",
+        "MinSize": "1",
+        "VPCZoneIdentifier": [
+          {
+            "Ref": "TestVpctestsubnetSubnet1Subnet212A675B",
+          },
+        ],
+      },
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+    },
+    "TestLaunchTemplateAppLaunchTemplate816C81D4": {
+      "Properties": {
+        "LaunchTemplateData": {
+          "ImageId": "ami-12345678",
+          "InstanceType": "t3.micro",
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "TestSGAppServerSG063DFCD3",
+                "GroupId",
+              ],
+            },
+          ],
+        },
+        "LaunchTemplateName": "TestLaunchTemplate",
+      },
+      "Type": "AWS::EC2::LaunchTemplate",
+    },
+    "TestSGAppServerSG063DFCD3": {
+      "Properties": {
+        "GroupDescription": "App Server Security Group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
+          },
+        ],
+        "VpcId": {
+          "Ref": "TestVpcE77CE678",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "TestVpcE77CE678": {
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/TestVpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "TestVpcIGW9DD53F70": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/TestVpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "TestVpcVPCGWF1827B84": {
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "TestVpcIGW9DD53F70",
+        },
+        "VpcId": {
+          "Ref": "TestVpcE77CE678",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+    "TestVpctestsubnetSubnet1DefaultRoute30ABFF53": {
+      "DependsOn": [
+        "TestVpcVPCGWF1827B84",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "TestVpcIGW9DD53F70",
+        },
+        "RouteTableId": {
+          "Ref": "TestVpctestsubnetSubnet1RouteTableA3F3FD85",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "TestVpctestsubnetSubnet1RouteTableA3F3FD85": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/TestVpc/test-subnetSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "TestVpcE77CE678",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "TestVpctestsubnetSubnet1RouteTableAssociation9E8E56C2": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "TestVpctestsubnetSubnet1RouteTableA3F3FD85",
+        },
+        "SubnetId": {
+          "Ref": "TestVpctestsubnetSubnet1Subnet212A675B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "TestVpctestsubnetSubnet1Subnet212A675B": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.0.0/16",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "test-subnet",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestStack/TestVpc/test-subnetSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "TestVpcE77CE678",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

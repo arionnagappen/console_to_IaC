@@ -1,6 +1,7 @@
 import { App } from 'aws-cdk-lib'
 import { Template } from 'aws-cdk-lib/assertions'
-import { NetworkStack } from '../lib/stacks/network-stack'
+import { NetworkStack } from '../../lib/stacks/network-stack'
+import { CfnSubnetCidrBlock } from 'aws-cdk-lib/aws-ec2';
 
 // Assertion Test
 test('VPC is created with correct CIDR', ()=> {
@@ -9,8 +10,12 @@ test('VPC is created with correct CIDR', ()=> {
 
   const template = Template.fromStack(stack);
 
+  // Checks if only one VPC is created
+  template.resourceCountIs('AWS::EC2::VPC', 1)
+
+  // Checks the CIDR Block of the VPC
   template.hasResourceProperties('AWS::EC2::VPC', {
-    CidrBlock: '10.0.0.0/16'
+    CidrBlock: '10.0.0.0/16',
   });
 });
 
