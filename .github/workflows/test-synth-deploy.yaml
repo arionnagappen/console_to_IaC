@@ -45,7 +45,7 @@ jobs:
       - name: Check if CDK is Bootstrapped
         id: bootstrap-check
         run: |
-          if aws cloudformation describe-stacks --region af-south-1 --stack-name CDKToolkit > /dev/null 2>&1
+          if aws cloudformation describe-stacks --region af-south-1 --stack-name CDKToolkit > /dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
