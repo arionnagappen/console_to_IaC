@@ -54,7 +54,7 @@ jobs:
 
       # CDK Bootstrap
       - name: CDK Bootstrap
-        if: steps.bootstrap-check.outputs.exists=='false'
+        if: steps.bootstrap-check.outputs.exists == 'false'
         run: npx cdk bootstrap
         working-directory: cdk-app/
         
