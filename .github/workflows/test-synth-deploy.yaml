@@ -41,8 +41,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: af-south-1
 
+      # Check for CDK Bootstrap
+      - name: Check if CDK is Bootstrapped
+        id: bootstrap-check
+        run: |
+          if aws cloudformation describe-stacks --region af-south-1 --stack-name CDKToolkit > /dev/null 2>&1
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
       # CDK Bootstrap
       - name: CDK Bootstrap
+        if: steps.bootstrap-check.outputs.exists=='false'
         run: npx cdk bootstrap
         working-directory: cdk-app/
         
