@@ -50,6 +50,7 @@ jobs:
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
+        working-directory: cdk-app/
 
       # CDK Bootstrap
       - name: CDK Bootstrap
