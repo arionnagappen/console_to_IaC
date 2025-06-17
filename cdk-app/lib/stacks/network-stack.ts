@@ -16,6 +16,8 @@ export class NetworkStack extends cdk.Stack{
       cidrMask: 24
     });
 
+    this.vpc = myVpc.vpc
+
     new cdk.CfnOutput(this, 'VpcId', {
       value: myVpc.vpc.vpcId,
       description: 'VPC ID'
