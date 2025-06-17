@@ -46,8 +46,10 @@ jobs:
         id: bootstrap-check
         run: |
           if aws cloudformation describe-stacks --region af-south-1 --stack-name CDKToolkit > /dev/null 2>&1; then
+            echo "CDKToolkit already exists"
             echo "exists=true" >> $GITHUB_OUTPUT
           else
+            echo "CDKToolkit does NOT exist"
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
         working-directory: cdk-app/
