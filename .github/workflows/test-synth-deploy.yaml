@@ -62,11 +62,12 @@ jobs:
         
       # Deploy CDK App
       - name: CDK Deploy
-        run: npx cdk deploy --require-approval never
+        run: npx cdk deploy --all --require-approval never
         working-directory: cdk-app/
 
       # Destroy CDK App
       - name: CDK Destroy
-        run: npx cdk destroy --force
+        run: npx cdk destroy --all --force
         working-directory: cdk-app/
 
+      
