@@ -67,6 +67,7 @@ jobs:
 
       # Destroy CDK App
       - name: CDK Destroy
-        run: npx cdk destroy --force
+        run: npx cdk destroy --all --force
         working-directory: cdk-app/
 
+      
