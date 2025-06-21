@@ -10,8 +10,6 @@ interface DBStackProps extends cdk.StackProps{
   appSecurityGroup: ec2.ISecurityGroup;
 }
 
-
-
 export class DBStack extends cdk.Stack{
   constructor(scope: Construct, id: string, props: DBStackProps) {
     super(scope, id, props)
