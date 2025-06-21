@@ -17,16 +17,18 @@ export class AppSecurityGroup extends Construct {
       allowAllOutbound: false
     });
 
-    // Only accept inbound traffic on port 80
+    
+    // Only allow inbound traffic on port 80
+    this.securityGroup.addIngressRule(
+      ec2.Peer.anyIpv4(),
+      ec2.Port.tcp(80)
+    )
+
+    // Only allow outbound traffic on port 80
     this.securityGroup.addEgressRule(
       ec2.Peer.anyIpv4(),
       ec2.Port.tcp(80),
     )
 
-    // Only send outbound traffic on port 80
-    this.securityGroup.addIngressRule(
-      ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(80)
-    )
   }
 }

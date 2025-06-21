@@ -10,6 +10,8 @@ interface ComputeStackProps extends cdk.StackProps{
 }
 
 export class ComputeStack extends cdk.Stack {
+  public readonly launchTempSg: ec2.ISecurityGroup;
+
   constructor(scope: Construct, id: string, props: ComputeStackProps){
     super(scope, id, props)
 
@@ -23,6 +25,8 @@ export class ComputeStack extends cdk.Stack {
       instanceType: 't3.micro',
       securityGroupId: launchTempSg.securityGroup.securityGroupId
     });
+
+    this.launchTempSg = launchTempSg.securityGroup;
 
     new MyAutoScalingGroup(this, 'AppServerASG', {
       vpc: props.vpc,

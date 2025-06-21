@@ -8,6 +8,6 @@ const app = new cdk.App();
 
 const networkStack = new NetworkStack(app, 'NetworkStack', {})
 
-new ComputeStack(app, 'ComputeStack', {
+const computeStack = new ComputeStack(app, 'ComputeStack', {
   vpc: networkStack.vpc
 })
