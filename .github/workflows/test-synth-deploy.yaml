@@ -1,7 +1,7 @@
 name: Deploy CDK Application
 
 on: 
-  push:
+  pull_request:
     branches:
       - '*'
 
