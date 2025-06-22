@@ -3,6 +3,7 @@ import { DatabaseSecurityGroup } from "../constructs/database/rds-sg-construct";
 import { MyRDSInstance } from "../constructs/database/rds-instance-construct"; 
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as rds from 'aws-cdk-lib/aws-rds';
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager'
 import * as cdk from 'aws-cdk-lib';
 
 interface DBStackProps extends cdk.StackProps{
@@ -29,7 +30,11 @@ export class DBStack extends cdk.Stack{
       removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
-    const myCredentials = rds.Credentials.fromGeneratedSecret('rds-credentials')
+    // Retrieve Secret
+    const dbSecret = secretsmanager.Secret.fromSecretNameV2(this, 'SecretName','rds-credentials');
+
+    // Tell RDS use the Secret
+    const myCredentials = rds.Credentials.fromSecret(dbSecret);
 
     new MyRDSInstance(this, 'MyDatabase', {
       vpc: props.vpc,
@@ -39,7 +44,7 @@ export class DBStack extends cdk.Stack{
       dbStorage: 10,
       dbEngine: rds.DatabaseInstanceEngine.mysql({version: rds.MysqlEngineVersion.VER_8_4_5}),
       dbCredentials: myCredentials,
-      dbSecurityGroup: [props.appSecurityGroup],
+      dbSecurityGroup: [dbSecurityGroup.dbSecurityGroup],
       dbMultiAZ: true,
     })
 
