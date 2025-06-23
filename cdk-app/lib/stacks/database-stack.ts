@@ -8,7 +8,7 @@ import * as cdk from 'aws-cdk-lib';
 
 interface DBStackProps extends cdk.StackProps{
   vpc: ec2.IVpc
-  appSecurityGroup: ec2.ISecurityGroup;
+  appSecurityGroupId: ec2.ISecurityGroup["securityGroupId"];
 }
 
 export class DBStack extends cdk.Stack{
@@ -18,7 +18,7 @@ export class DBStack extends cdk.Stack{
     // Security Group
     const dbSecurityGroup = new DatabaseSecurityGroup(this, 'DBSecurityGroup', {
       vpc: props.vpc,
-      appSecurityGroup: props.appSecurityGroup
+      appSecurityGroupId: props.appSecurityGroupId
     });
 
     const mySubnetGroup = new rds.SubnetGroup(this, 'MyDbSubnetGroup', {
