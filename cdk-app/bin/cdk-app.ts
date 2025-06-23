@@ -14,5 +14,5 @@ const computeStack = new ComputeStack(app, 'ComputeStack', {
 
 const dBStack = new DBStack(app, 'DatabaseStack', {
   vpc: networkStack.vpc,
-  appSecurityGroup: computeStack.launchTempSg
+  appSecurityGroupId: computeStack.launchTempSg.securityGroupId
 })
