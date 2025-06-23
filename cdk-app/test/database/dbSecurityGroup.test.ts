@@ -1,10 +1,10 @@
 import * as cdk from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import { AppSecurityGroup } from '../../lib/constructs/compute/launchTemp-SG';
+import { DatabaseSecurityGroup } from '../../lib/constructs/database/rds-sg-construct';
 
 // Assertion Test
-test('App Server Security Group has correct rules', () => {
+test('Test DB Security group for  correct rules', ()=>{
   // Instantiates the App Construct
   const app = new cdk.App();
 
@@ -16,37 +16,43 @@ test('App Server Security Group has correct rules', () => {
     maxAzs: 1,
   });
 
-  new AppSecurityGroup(stack, 'TestSG', {vpc});
+  const appSG = new ec2.SecurityGroup(stack, 'TestSG', {vpc});
+
+  new DatabaseSecurityGroup(stack, 'DbSGTest', {
+    vpc: vpc, 
+    appSecurityGroupId: appSG.securityGroupId
+  })
 
   const template = Template.fromStack(stack);
 
-  // Ingress Rule on Port 80
   template.hasResourceProperties('AWS::EC2::SecurityGroup', {
+
+    GroupDescription: 'RDS Database Security Group',
+
+    // Ingress Rule on Port 3306
     SecurityGroupIngress: Match.arrayWith([
       Match.objectLike ({
         IpProtocol: 'tcp',
-        FromPort: 80,
-        ToPort: 80,
-        CidrIp: '0.0.0.0/0',
+        FromPort: 3306,
+        ToPort: 3306,
+        SourceSecurityGroupId: Match.anyValue()
       })
-    ])
-  });
+    ]),
 
-  // Egress Rule on Port 80
-  template.hasResourceProperties('AWS::EC2::SecurityGroup', {
+    // Egress Rule on Port 3306
     SecurityGroupEgress: Match.arrayWith([
       Match.objectLike ({
         IpProtocol: 'tcp',
-        FromPort: 80,
-        ToPort: 80,
-        CidrIp: '0.0.0.0/0',
+        FromPort: 3306,
+        ToPort: 3306,
+        DestinationSecurityGroupId: Match.anyValue()
       })
     ])
   });
 });
 
 // Snapshot Test
-test('App Security Group matches snapshot', ()=>{
+test('Database Security Group matches snapshot', ()=>{
   // Instantiates the App Construct
   const app = new cdk.App();
 
@@ -56,7 +62,12 @@ test('App Security Group matches snapshot', ()=>{
   // Adds a Vpc
   const vpc = new ec2.Vpc(stack, 'TestVpc', {maxAzs: 1,});
 
-  new AppSecurityGroup(stack, 'TestSG', {vpc});
+  const appSG = new ec2.SecurityGroup(stack, 'TestSG', {vpc});
+
+  new DatabaseSecurityGroup(stack, 'DbSGTest', {
+    vpc: vpc, 
+    appSecurityGroupId: appSG.securityGroupId
+  })
 
   const template = Template.fromStack(stack).toJSON();
 
