@@ -1,0 +1,360 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DB Unit Test Matches SnapShot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "MyDatabaseMyRDSInstanceAA7465FD": {
+      "DeletionPolicy": "Snapshot",
+      "Properties": {
+        "AllocatedStorage": "10",
+        "CopyTagsToSnapshot": true,
+        "DBInstanceClass": "db.t3.micro",
+        "DBName": "myDatabase",
+        "DBSubnetGroupName": {
+          "Ref": "MyDbSubnetGroup",
+        },
+        "DeletionProtection": false,
+        "Engine": "mysql",
+        "EngineVersion": "8.4.5",
+        "KmsKeyId": {
+          "Fn::GetAtt": [
+            "MyDatabaseRdsKmsKeyDE61EEDB",
+            "Arn",
+          ],
+        },
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":secretsmanager:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":secret:rds-credentials:SecretString:password::}}",
+            ],
+          ],
+        },
+        "MasterUsername": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":secretsmanager:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":secret:rds-credentials:SecretString:username::}}",
+            ],
+          ],
+        },
+        "MultiAZ": true,
+        "PubliclyAccessible": false,
+        "StorageEncrypted": true,
+        "StorageType": "gp2",
+        "VPCSecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "TestDbSGDBSecurityGroupE28CDCBD",
+              "GroupId",
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::RDS::DBInstance",
+      "UpdateReplacePolicy": "Snapshot",
+    },
+    "MyDatabaseRdsKmsKeyAlias61DB8650": {
+      "Properties": {
+        "AliasName": "alias/myRdsKey",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "MyDatabaseRdsKmsKeyDE61EEDB",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+    },
+    "MyDatabaseRdsKmsKeyDE61EEDB": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "MyDbSubnetGroup": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnet group for RDS",
+        "SubnetIds": [
+          {
+            "Ref": "TestVpctestsubnetSubnet1Subnet212A675B",
+          },
+        ],
+      },
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "SecretNameAttachment5029B42C": {
+      "Properties": {
+        "SecretId": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":secretsmanager:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":secret:rds-credentials",
+            ],
+          ],
+        },
+        "TargetId": {
+          "Ref": "MyDatabaseMyRDSInstanceAA7465FD",
+        },
+        "TargetType": "AWS::RDS::DBInstance",
+      },
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+    },
+    "TestAppSG78644F93": {
+      "Properties": {
+        "GroupDescription": "TestStack/TestAppSG",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "TestVpcE77CE678",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "TestDbSGDBSecurityGroupE28CDCBD": {
+      "Properties": {
+        "GroupDescription": "RDS Database Security Group",
+        "SecurityGroupEgress": [
+          {
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "TestAppSG78644F93",
+                      "GroupId",
+                    ],
+                  },
+                  ":3306",
+                ],
+              ],
+            },
+            "DestinationSecurityGroupId": {
+              "Fn::GetAtt": [
+                "TestAppSG78644F93",
+                "GroupId",
+              ],
+            },
+            "FromPort": 3306,
+            "IpProtocol": "tcp",
+            "ToPort": 3306,
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "TestAppSG78644F93",
+                      "GroupId",
+                    ],
+                  },
+                  ":3306",
+                ],
+              ],
+            },
+            "FromPort": 3306,
+            "IpProtocol": "tcp",
+            "SourceSecurityGroupId": {
+              "Fn::GetAtt": [
+                "TestAppSG78644F93",
+                "GroupId",
+              ],
+            },
+            "ToPort": 3306,
+          },
+        ],
+        "VpcId": {
+          "Ref": "TestVpcE77CE678",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "TestVpcE77CE678": {
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/TestVpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "TestVpctestsubnetSubnet1RouteTableA3F3FD85": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "TestStack/TestVpc/test-subnetSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "TestVpcE77CE678",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "TestVpctestsubnetSubnet1RouteTableAssociation9E8E56C2": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "TestVpctestsubnetSubnet1RouteTableA3F3FD85",
+        },
+        "SubnetId": {
+          "Ref": "TestVpctestsubnetSubnet1Subnet212A675B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "TestVpctestsubnetSubnet1Subnet212A675B": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.0.0/16",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "test-subnet",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated",
+          },
+          {
+            "Key": "Name",
+            "Value": "TestStack/TestVpc/test-subnetSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "TestVpcE77CE678",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
