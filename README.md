@@ -2,7 +2,7 @@
 
 ## 🚀 Executive Summary
 
-This project demonstrates how TechHealth Inc. migrated its AWS infrastructure from fragile, manually configured console setups to a robust, modular, and testable Infrastructure as Code (IaC) system using AWS CDK (TypeScript). It reflects production-grade design patterns that emphasize reliability, scalability, and velocity — the exact skills top-tier cloud engineers bring to the table.
+This project demonstrates how TechHealth Inc. migrated its AWS infrastructure from fragile, manually configured console setups to a modular and testable Infrastructure as Code (IaC) system using AWS CDK (TypeScript). It reflects real-world patterns used in production environments — with scoped tradeoffs made for learning and demonstration purposes.
 
 ---
 
@@ -38,7 +38,7 @@ This project demonstrates how TechHealth Inc. migrated its AWS infrastructure fr
 
 ## 🔍 Design Decisions
 
-* **TypeScript CDK over Terraform**: Native AWS integration, higher-level abstraction, strong typing
+* **TypeScript CDK**: Native AWS integration, high-level abstraction, strong typing
 * **Unit + Snapshot Testing**: Detect config drift and broken contracts before deployment
 * **Construct/Stack Separation**: Reusability and domain-driven structure
 * **CI/CD over Console**: Auditability, rollback, and safer deploys via GitHub Actions
