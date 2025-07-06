@@ -93,7 +93,7 @@ $ npx cdk deploy --all
 
 * This repo reflects my ability to:
 
-  * Build production-grade AWS infra using CDK
+  * Build production-grade AWS infrastructure using CDK
   * Design for testability, modularity, and maintainability
   * Set up CI/CD pipelines for safe, auditable deploys
   * Align technical design with business value
